@@ -1,3 +1,4 @@
+import json
 import os
 
 import pandas as pd
@@ -79,7 +80,7 @@ def load_labels_from_tsv(filepath, label_order):
         """
     try:
         dataframe = pd.read_csv(filepath, encoding='utf-8', sep='\t', header=0)
-        # dataframe = dataframe[['Argument ID'] + label_order]
+        dataframe = dataframe[['Argument ID'] + label_order]
         return dataframe
     except IOError:
         traceback.print_exc()
@@ -107,14 +108,16 @@ def format_dataset(data_dir, argument_filepath, validate=False):
     df_train_all = []
     df_valid_all = []
 
-    for label_filepath in [os.path.join(data_dir, 'labels-training.tsv'),
-                                 os.path.join(data_dir, 'level1-labels-training.tsv')
-                                 ]:
+    for i in range(NUM_LEVELS):
+        label_filepath = os.path.join(data_dir, 'labels-level{}.tsv'.format(LEVELS[i]))
+        if not os.path.isfile(label_filepath):
+            print('The required file "labels-level{}.tsv" is not present in the data directory'.format(LEVELS[i]))
+            sys.exit(2)
         if not os.path.isfile(label_filepath):
             print('The required file ``{}`` is not present in the data directory'.format(label_filepath))
             sys.exit(2)
         # read labels from .tsv file
-        df_labels = load_labels_from_tsv(label_filepath, 'arguments-training')
+        df_labels = load_labels_from_tsv(label_filepath, VALUES[LEVELS[i]])
         # join arguments and labels
         df_full_level = combine_columns(df_arguments, df_labels)
         # split dataframe by usage
@@ -131,9 +134,28 @@ def format_dataset(data_dir, argument_filepath, validate=False):
 
     return df_train_all, df_valid_all
 
+def load_json_file(filepath):
+    """Load content of json-file from `filepath`"""
+    with open(filepath, 'r') as json_file:
+        return json.load(json_file)
+
+def load_values_from_json(filepath):
+    """Load values per level from json-file from `filepath`"""
+    json_values = load_json_file(filepath)
+    values = { "1":set(), "2":set()}
+    for value in json_values["values"]:
+        values["1"].add(value["name"])
+        values["2"].add(value["level2"])
+
+    values["1"] = sorted(values["1"])
+    values["2"] = sorted(values["2"])
+
+    return values
+
 if __name__ == '__main__':
     LEVELS = ["1", "2"]
     NUM_LEVELS = len(LEVELS)
+    VALUES = load_values_from_json('./value_data/values.json')
 
-    v = format_dataset('./value_data/','./value_data/arguments-training.tsv')
+    v = format_dataset('./value_data/','./value_data/arguments.tsv')
     print(v)

@@ -9,9 +9,9 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser(description = "model params")
     parser.add_argument("--gpu", type=int, default=0,
                             help="choose which GPU")
-    parser.add_argument("--dataset", "-d", type=str, default='twitter',
+    parser.add_argument("--dataset", "-d", type=str, default='snippets',
                             help="choose the dataset: 'snippets' or 'twitter'")
-    parser.add_argument("--data_path", "-d_path", type=str, default='../data/',
+    parser.add_argument("--data_path", "-d_path", type=str, default='../preprocess/',
                             help="choose the data path if necessary")
     parser.add_argument("--save_path", type=str, default="../",
                             help="save path")
@@ -35,8 +35,8 @@ if __name__ == '__main__':
                             help="concat word embedding with pretrained model")
     params = parser.parse_args()
     params.type_num_node = ['query', 'tag', 'word', 'entity']
-    params.data_path = params.data_path + './{}_data/'.format(params.dataset)
-    params.save_name = params.save_path + './result_torch_{}.json'.format(params.dataset)
+    params.data_path = params.data_path + '{}_data/'.format(params.dataset)
+    params.save_name = params.save_path + 'result_torch_{}.json'.format(params.dataset)
     if not params.disable_cuda and torch.cuda.is_available():
         params.device = torch.device('cuda:%d' % params.gpu)
     else:

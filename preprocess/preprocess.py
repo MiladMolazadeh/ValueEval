@@ -5,7 +5,7 @@ import math
 import nltk
 from tqdm import tqdm
 import os
-
+from sentence_transformers import SentenceTransformer
 from scipy.sparse import coo_matrix
 import matplotlib.pyplot as plt
 import re
@@ -293,17 +293,19 @@ def make_node2id_eng_text(dataset_name, remove_StopWord=False):
               ensure_ascii=False)
     json.dump(word_nodes, open('./{}_data/word_id2_list.json'.format(dataset_name), 'w'), ensure_ascii=False)
 
-    glove_emb = pkl.load(open('./pretrained_emb/old_glove_6B/embedding_glove.p', 'rb'))
-    vocab = pkl.load(open('./pretrained_emb/old_glove_6B/vocab.pkl', 'rb'))
+    # glove_emb = pkl.load(open('./pretrained_emb/old_glove_6B/embedding_glove.p', 'rb'))
+    sbert_emb = SentenceTransformer('/home/LanguageModels/deberta-large')
+    # vocab = pkl.load(open('./pretrained_emb/old_glove_6B/vocab.pkl', 'rb'))
     embs = []
     err_count = 0
     for word in word_nodes:
-        if word in vocab:
-            embs.append(glove_emb[vocab[word]])
-        else:
-            err_count += 1
-            # print('error:', word)
-            embs.append(np.zeros(300, dtype=np.float64))
+        embs.append(sbert_emb.encode(word))
+        # if word in vocab:
+        #     embs.append(glove_emb[vocab[word]])
+        # else:
+        #     err_count += 1
+        #     # print('error:', word)
+        #     embs.append(np.zeros(300, dtype=np.float64))
     print('err in word count', err_count)
     pkl.dump(np.array(embs, dtype=np.float64), open('./{}_data/word_emb.pkl'.format(dataset_name), 'wb'))
 

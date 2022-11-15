@@ -126,23 +126,23 @@ class Trainer(object):
         nums_node = []
         for i in range(1, len(self.type_names)):
             adj_dict[str(0) + str(i)] = pkl.load(
-                    open(self.data_path + './adj_{}2{}.pkl'.format(self.type_names[0], self.type_names[i]), 'rb'))
+                    open(self.data_path + 'adj_{}2{}.pkl'.format(self.type_names[0], self.type_names[i]), 'rb'))
             if i == 1:
                 nums_node.append(adj_dict[str(0) + str(i)].shape[0])
             if i != 3:
                 adj_dict[str(i) + str(i)] = pkl.load(
-                    open(self.data_path + './adj_{}.pkl'.format(self.type_names[i]), 'rb'))
+                    open(self.data_path + 'adj_{}.pkl'.format(self.type_names[i]), 'rb'))
                 nums_node.append(adj_dict[str(i) + str(i)].shape[0])
             if i == 3:
                 feature_dict[str(i)] = pkl.load(
-                    open(self.data_path + './{}_emb.pkl'.format(self.type_names[i]), 'rb'))
+                    open(self.data_path + '{}_emb.pkl'.format(self.type_names[i]), 'rb'))
                 nums_node.append(feature_dict[str(i)].shape[0])
                 nums_node.append(feature_dict[str(i)].shape[1])
             else:
                 feature_dict[str(i)] = np.eye(nums_node[i], dtype=np.float64)
 
         feature_dict['word_emb'] = torch.tensor(pkl.load(
-            open(self.data_path + './word_emb.pkl', 'rb')), dtype=torch.float).to(self.device)
+            open(self.data_path + 'word_emb.pkl', 'rb')), dtype=torch.float).to(self.device)
         ent_emb=feature_dict['3']
         ent_emb_normed = ent_emb / np.sqrt(np.square(ent_emb).sum(-1, keepdims=True))
         adj_dict['33'] = np.matmul(ent_emb_normed, ent_emb_normed.transpose())
@@ -158,9 +158,9 @@ class Trainer(object):
         for i in feature_dict.keys():
             feature[i] = fetch_to_tensor(feature_dict, i, self.device)
         
-        train_set = json.load(open(self.data_path + './train_idx.json'))
-        test_set = json.load(open(self.data_path + './test_idx.json'))
-        labels = json.load(open(self.data_path + './labels.json'))
+        train_set = json.load(open(self.data_path + 'train_idx.json'))
+        test_set = json.load(open(self.data_path + 'test_idx.json'))
+        labels = json.load(open(self.data_path + 'labels.json'))
         
         data_index = train_set + test_set
         Sumofquery = len(data_index)

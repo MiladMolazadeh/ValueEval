@@ -68,7 +68,8 @@ class SHINE(nn.Module):
                                 self.final_GCN(refined_adj,refined_text_input_after_final_linear))
         final_text_output = F.dropout(final_text_output, p=self.drop_out, training=self.training)
         scores = self.FC(final_text_output)
-        return scores
+
+        return torch.nn.Sigmoid()(scores)
 
 
 

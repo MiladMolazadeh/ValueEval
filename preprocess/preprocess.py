@@ -283,8 +283,8 @@ def make_node2id_eng_text(dataset_name, remove_StopWord=False):
     json.dump(train_idx, open('./{}_data/train_idx.json'.format(dataset_name), 'w'), ensure_ascii=False)
     json.dump(test_idx, open('./{}_data/test_idx.json'.format(dataset_name), 'w'), ensure_ascii=False)
 
-    label_map = {value: i for i, value in enumerate(set(labels))}
-    json.dump([label_map[label] for label in labels], open('./{}_data/labels.json'.format(dataset_name), 'w'),
+    # label_map = {value: i for i, value in enumerate(set(labels))}
+    json.dump([label for label in labels], open('./{}_data/labels.json'.format(dataset_name), 'w'),
               ensure_ascii=False)
     json.dump(query_nodes, open('./{}_data/query_id2_list.json'.format(dataset_name), 'w'),
               ensure_ascii=False)

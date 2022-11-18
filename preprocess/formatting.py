@@ -163,11 +163,11 @@ if __name__ == '__main__':
             str(id_row):
                 {
                     'text': row['Premise'],
-                    'label': row['Universalism: concern']
-                    # 'label': [b for a, b in row.to_dict().items() if a not in ['Argument ID',
-                    #                                                    "Conclusion",
-                    #                                                    "Stance",
-                    #                                                    "Premise"]]
+                    # 'label': row['Universalism: concern']
+                    'label': [b for a, b in row.to_dict().items() if a not in ['Argument ID',
+                                                                       "Conclusion",
+                                                                       "Stance",
+                                                                       "Premise"]]
                 }
 
         })

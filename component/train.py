@@ -19,7 +19,7 @@ if __name__ == '__main__':
                             help='disable CUDA')
     parser.add_argument("--seed", type=int, default=119, 
                             help="seeds for random initial")
-    parser.add_argument("--hidden_size", type=int, default=200, 
+    parser.add_argument("--hidden_size", type=int, default=200,
                             help="hidden size")                        
     parser.add_argument("--threshold", type=float, default=2.7,
                             help="threshold for graph construction")
@@ -27,9 +27,9 @@ if __name__ == '__main__':
                             help="learning rate of the optimizer")
     parser.add_argument("--weight_decay", type=float, default=1e-4,
                             help="adjust the learning rate via epochs")
-    parser.add_argument("--drop_out", type=float, default=0.7,
+    parser.add_argument("--drop_out", type=float, default=0.2,
                             help="dropout rate")
-    parser.add_argument("--max_epoch", type=int, default=1000,
+    parser.add_argument("--max_epoch", type=int, default=200,
                             help="max numer of epochs")
     parser.add_argument("--concat_word_emb", type=bool, default=True,
                             help="concat word embedding with pretrained model")

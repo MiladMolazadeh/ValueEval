@@ -69,7 +69,7 @@ class SHINE(nn.Module):
         final_text_output = F.dropout(final_text_output, p=self.drop_out, training=self.training)
         scores = self.FC(final_text_output)
 
-        return torch.nn.Sigmoid()(scores)
+        return scores
 
 
 

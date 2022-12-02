@@ -127,7 +127,7 @@ def make_node2id_eng_text(dataset_name, remove_StopWord=False):
             freq_stop+=1
     print('freq_stop num',freq_stop)
 
-    ent2id_new = json.load(open('./pretrained_emb/NELL_KG/ent2ids_refined', 'r'))
+    ent2id_new = json.load(open('pretrained_emb/NELL_KG/ent2ids_refined', 'r'))
     adj_ent_index = []
     query_nodes = []
     tag_set = set()

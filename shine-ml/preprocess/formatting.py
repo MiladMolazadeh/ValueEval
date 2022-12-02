@@ -148,9 +148,9 @@ def load_values_from_json(filepath):
 if __name__ == '__main__':
     LEVELS = ["1", "2"]
     NUM_LEVELS = len(LEVELS)
-    VALUES = load_values_from_json('./value_data/values.json')
+    VALUES = load_values_from_json('value_data/values.json')
 
-    dataset = format_dataset('./value_data/', './value_data/arguments-training.tsv')
+    dataset = format_dataset('value_data/', './value_data/arguments-training.tsv')
     snippet_format = {'train': {}, 'test': {}}
     for id_row, row in dataset.iterrows():
         key = 'train'

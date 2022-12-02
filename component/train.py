@@ -23,7 +23,7 @@ if __name__ == '__main__':
                             help="hidden size")                        
     parser.add_argument("--threshold", type=float, default=2.7,
                             help="threshold for graph construction")
-    parser.add_argument("--lr", type=float, default=1e-3,
+    parser.add_argument("--lr", type=float, default=1e-5,
                             help="learning rate of the optimizer")
     parser.add_argument("--weight_decay", type=float, default=1e-4,
                             help="adjust the learning rate via epochs")

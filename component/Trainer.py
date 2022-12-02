@@ -69,18 +69,20 @@ class Trainer(object):
             output = self.model(i)
             train_scores = output[self.train_idx]
             train_labels = self.labels[self.train_idx]
-            loss = F.binary_cross_entropy(train_scores.view(-1, self.label_num),
-                                          train_labels.float().view(-1, self.label_num))
+            # loss = F.binary_cross_entropy(train_scores.view(-1, self.label_num),
+            #                               train_labels.float().view(-1, self.label_num))
             # loss = loss_fct(train_scores.view(-1, self.label_num),
             #                                 train_labels.float().view(-1, self.label_num))
-            print(loss)
+
+            loss=loss_fct(train_scores, train_labels.float())
+
             self.optim.zero_grad()
             loss.backward()
             self.optim.step()
             loss = loss.item()
 
             # acc = torch.eq(torch.argmax(train_scores, dim=-1), train_labels).float().mean().item()
-            acc = torch.eq(1 * (train_scores > 0.5), train_labels).float().mean().item()
+            acc = torch.eq(1 * (torch.sigmoid(train_scores) > 0.5), train_labels).float().mean().item()
             print('Epoch {}  loss: {:.4f} acc: {:.4f} time{:.4f}'.format(i, loss, acc, time.time() - t))
             if i % 10 == 0:
                 acc_valid, loss_valid, f1_valid, acc_test, loss_test, f1_test = self.test(i)
@@ -122,13 +124,13 @@ class Trainer(object):
             # loss_valid = F.cross_entropy(valid_scores, valid_labels).item()
             loss_valid = loss_fct(valid_scores.view(-1, self.label_num),
                                   valid_labels.float().view(-1, self.label_num))
-            acc_valid = torch.eq(1 * (valid_scores > 0.5), valid_labels).float().mean().item()
+            acc_valid = torch.eq(1 * (torch.sigmoid(valid_scores) > 0.5), valid_labels).float().mean().item()
             # acc_valid = torch.eq(torch.argmax(valid_scores, dim=-1), valid_labels).float().mean().item()
             f1_scores_valid = {}
             f1_valid = 0
             for i in range(len(valid_labels[0])):
                 f1_valid += metrics.f1_score(valid_labels[:, i].detach().cpu().numpy(),
-                                            1 * (valid_scores[:, i] > 0.5), average='macro')
+                                            1 * (valid_scores[:, i].detach().cpu().numpy() > 0.5), average='macro')
             f1_valid = f1_valid/len(valid_labels[0])
             print('Epoch {}  loss: {:.4f} acc: {:.4f}'.format(epoch, loss_train, acc_train),
                   'Valid  loss: {:.4f}  acc: {:.4f}  f1: {:.4f}'.format(loss_valid, acc_valid, f1_valid))

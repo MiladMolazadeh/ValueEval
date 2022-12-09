@@ -141,6 +141,7 @@ def make_node2id_eng_text(dataset_name, remove_StopWord=False):
     ent_mapping = {} 
 
     for i, item in enumerate(tqdm(f_train.values())):
+        if i> 100: break
         # item=f_train[str(i)]
         query = clean_str(item['text'])
         if not query:

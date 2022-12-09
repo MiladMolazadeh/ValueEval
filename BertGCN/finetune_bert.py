@@ -21,9 +21,10 @@ parser.add_argument('--batch_size', type=int, default=128)
 parser.add_argument('--nb_epochs', type=int, default=60)
 parser.add_argument('--bert_lr', type=float, default=1e-4)
 parser.add_argument('--dataset', default='20ng', choices=['20ng', 'R8', 'R52', 'ohsumed', 'mr'])
-parser.add_argument('--bert_init', type=str, default='roberta-base',
+parser.add_argument('--bert_init', type=str, default='/home/LanguageModels/xlm-roberta-base',
                     choices=['roberta-base', 'roberta-large', 'bert-base-uncased', 'bert-large-uncased'])
-parser.add_argument('--checkpoint_dir', default=None, help='checkpoint directory, [bert_init]_[dataset] if not specified')
+parser.add_argument('--checkpoint_dir', default=None,
+                    help='checkpoint directory, [bert_init]_[dataset] if not specified')
 
 args = parser.parse_args()
 
@@ -78,35 +79,42 @@ nb_class = y_train.shape[1]
 model = BertClassifier(pretrained_model=bert_init, nb_class=nb_class)
 
 # transform one-hot label to class ID for pytorch computation
-y = th.LongTensor((y_train + y_val +y_test).argmax(axis=1))
+y = th.LongTensor((y_train + y_val + y_test).argmax(axis=1))
 label = {}
-label['train'], label['val'], label['test'] = y[:nb_train], y[nb_train:nb_train+nb_val], y[-nb_test:]
+label['train'], label['val'], label['test'] = y[:nb_train], y[nb_train:nb_train + nb_val], y[-nb_test:]
 
 # load documents and compute input encodings
-corpus_file = './data/corpus/'+dataset+'_shuffle.txt'
+corpus_file = './data/corpus/' + dataset + '_shuffle.txt'
 with open(corpus_file, 'r') as f:
     text = f.read()
-    text=text.replace('\\', '')
+    text = text.replace('\\', '')
     text = text.split('\n')
 
+
 def encode_input(text, tokenizer):
+    # encode list if text to input ids
     input = tokenizer(text, max_length=max_length, truncation=True, padding=True, return_tensors='pt')
     return input.input_ids, input.attention_mask
+
 
 input_ids, attention_mask = {}, {}
 
 input_ids_, attention_mask_ = encode_input(text, model.tokenizer)
 
 # create train/test/val datasets and dataloaders
-input_ids['train'], input_ids['val'], input_ids['test'] =  input_ids_[:nb_train], input_ids_[nb_train:nb_train+nb_val], input_ids_[-nb_test:]
-attention_mask['train'], attention_mask['val'], attention_mask['test'] =  attention_mask_[:nb_train], attention_mask_[nb_train:nb_train+nb_val], attention_mask_[-nb_test:]
+input_ids['train'], input_ids['val'], input_ids['test'] = input_ids_[:nb_train],\
+                                                          input_ids_[nb_train:nb_train + nb_val],\
+                                                          input_ids_[-nb_test:]
+
+attention_mask['train'], attention_mask['val'], attention_mask['test'] = attention_mask_[:nb_train],\
+                                                                         attention_mask_[nb_train:nb_train + nb_val],\
+                                                                         attention_mask_[-nb_test:]
 
 datasets = {}
 loader = {}
 for split in ['train', 'val', 'test']:
-    datasets[split] =  Data.TensorDataset(input_ids[split], attention_mask[split], label[split])
+    datasets[split] = Data.TensorDataset(input_ids[split], attention_mask[split], label[split])
     loader[split] = Data.DataLoader(datasets[split], batch_size=batch_size, shuffle=True)
-
 
 # Training
 
@@ -150,7 +158,7 @@ def test_step(engine, batch):
 
 
 evaluator = Engine(test_step)
-metrics={
+metrics = {
     'acc': Accuracy(),
     'nll': Loss(th.nn.CrossEntropyLoss())
 }
@@ -171,7 +179,7 @@ def log_training_results(trainer):
     test_acc, test_nll = metrics["acc"], metrics["nll"]
     logger.info(
         "\rEpoch: {}  Train acc: {:.4f} loss: {:.4f}  Val acc: {:.4f} loss: {:.4f}  Test acc: {:.4f} loss: {:.4f}"
-        .format(trainer.state.epoch, train_acc, train_nll, val_acc, val_nll, test_acc, test_nll)
+            .format(trainer.state.epoch, train_acc, train_nll, val_acc, val_nll, test_acc, test_nll)
     )
     if val_acc > log_training_results.best_val_acc:
         logger.info("New checkpoint")
@@ -189,6 +197,6 @@ def log_training_results(trainer):
         log_training_results.best_val_acc = val_acc
     scheduler.step()
 
-        
+
 log_training_results.best_val_acc = 0
 trainer.run(loader['train'], max_epochs=nb_epochs)

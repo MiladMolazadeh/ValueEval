@@ -56,7 +56,8 @@ def load_arguments_from_tsv(filepath, default_usage='test'):
     try:
         dataframe = pd.read_csv(filepath, encoding='utf-8', sep='\t', header=0)
         if not {'Argument ID', 'Premise'}.issubset(set(dataframe.columns.values)):
-            raise MissingColumnError('The argument "%s" file does not contain the minimum required columns [Argument ID, Premise].' % filepath)
+            raise MissingColumnError(
+                'The argument "%s" file does not contain the minimum required columns [Argument ID, Premise].' % filepath)
         if 'Usage' not in dataframe.columns.values:
             dataframe['Usage'] = [default_usage] * len(dataframe)
         return dataframe
@@ -116,16 +117,16 @@ def combine_columns(df_arguments, df_labels):
 def split_arguments(df_arguments):
     """Splits `DataFrame` by column `Usage` into `train`-, `validation`-, and `test`-arguments"""
     train_arguments = df_arguments.loc[df_arguments['Usage'] == 'train'].drop(['Usage'], axis=1).reset_index(drop=True)
-    valid_arguments = df_arguments.loc[df_arguments['Usage'] == 'validation'].drop(['Usage'], axis=1).reset_index(drop=True)
+    valid_arguments = df_arguments.loc[df_arguments['Usage'] == 'validation'].drop(['Usage'], axis=1).reset_index(
+        drop=True)
     test_arguments = df_arguments.loc[df_arguments['Usage'] == 'test'].drop(['Usage'], axis=1).reset_index(drop=True)
 
     return train_arguments, valid_arguments, test_arguments
 
 
-def format_dataset(data_dir, argument_filepath,values):
+def format_dataset(argument_filepath, label_filepath, values):
     df_arguments = load_arguments(argument_filepath)
 
-    label_filepath = os.path.join(data_dir, 'labels-training.tsv')
     if not os.path.isfile(label_filepath):
         print(f'The required file "{label_filepath}" is not present in the data directory')
         sys.exit(2)
@@ -136,7 +137,5 @@ def format_dataset(data_dir, argument_filepath,values):
     df_labels = load_labels_from_tsv(label_filepath, values["2"])
     # join arguments and labels
     df_full_level = combine_columns(df_arguments, df_labels)
-    # split dataframe by usage
-    train_arguments, valid_arguments, _ = split_arguments(df_full_level)
 
-    return train_arguments
+    return df_full_level

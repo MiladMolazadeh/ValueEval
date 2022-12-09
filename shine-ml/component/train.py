@@ -29,7 +29,7 @@ if __name__ == '__main__':
                             help="adjust the learning rate via epochs")
     parser.add_argument("--drop_out", type=float, default=0.2,
                             help="dropout rate")
-    parser.add_argument("--max_epoch", type=int, default=200,
+    parser.add_argument("--max_epoch", type=int, default=2000,
                             help="max numer of epochs")
     parser.add_argument("--concat_word_emb", type=bool, default=True,
                             help="concat word embedding with pretrained model")

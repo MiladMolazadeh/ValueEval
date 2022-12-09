@@ -22,7 +22,7 @@ parser.add_argument('--max_length', type=int, default=128, help='the input lengt
 parser.add_argument('--batch_size', type=int, default=64)
 parser.add_argument('-m', '--m', type=float, default=0.7, help='the factor balancing BERT and GCN prediction')
 parser.add_argument('--nb_epochs', type=int, default=50)
-parser.add_argument('--bert_init', type=str, default='roberta-base',
+parser.add_argument('--bert_init', type=str, default='/home/LanguageModels/xlm-roberta-base',
                     choices=['roberta-base', 'roberta-large', 'bert-base-uncased', 'bert-large-uncased'])
 parser.add_argument('--pretrained_bert_ckpt', default=None)
 parser.add_argument('--dataset', default='20ng', choices=['20ng', 'R8', 'R52', 'ohsumed', 'mr'])
@@ -278,4 +278,5 @@ def log_training_results(trainer):
 
 log_training_results.best_val_acc = 0
 g = update_feature()
+print("run")
 trainer.run(idx_loader, max_epochs=nb_epochs)

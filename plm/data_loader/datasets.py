@@ -39,7 +39,8 @@ class ValueDataset(Dataset):
         labels = [b for a, b in sample.items() if a not in ['Argument ID',
                                                            "Conclusion",
                                                            "Stance",
-                                                           "Premise"]]
+                                                           "Premise",
+                                                            "Usage"]]
         sequence_ids = torch.tensor(sequence_ids)
         return sequence_ids, torch.sign(sequence_ids), labels
 

@@ -74,7 +74,8 @@ class Trainer(object):
             # loss = loss_fct(train_scores.view(-1, self.label_num),
             #                                 train_labels.float().view(-1, self.label_num))
 
-            loss=loss_fct(train_scores, train_labels.float())
+            loss=loss_fct(train_scores,
+                          train_labels.float())
 
             self.optim.zero_grad()
             loss.backward()
@@ -111,27 +112,29 @@ class Trainer(object):
         t = time.time()
         self.model.training = False
         output = self.model(0)
-        loss_fct = F.binary_cross_entropy
+        # loss_fct = F.binary_cross_entropy
         with torch.no_grad():
             train_scores = output[self.train_idx]
             train_labels = self.labels[self.train_idx]
             # loss_train = F.cross_entropy(train_scores, train_labels).item()
-            loss_train = loss_fct(train_scores.view(-1, self.label_num),
-                                  train_labels.float().view(-1, self.label_num))
-            acc_train = torch.eq(train_scores.view(-1, self.label_num), train_labels).float().mean().item()
+            # loss_train = loss_fct(train_scores.view(-1, self.label_num),
+            #                       train_labels.float().view(-1, self.label_num))
+            acc_train = torch.eq(1*(torch.sigmoid(train_scores) > 0.5), train_labels).float().mean().item()
             valid_scores = output[self.valid_idx]
             valid_labels = self.labels[self.valid_idx]
             # loss_valid = F.cross_entropy(valid_scores, valid_labels).item()
-            loss_valid = loss_fct(valid_scores.view(-1, self.label_num),
-                                  valid_labels.float().view(-1, self.label_num))
+            # loss_valid = loss_fct(valid_scores.view(-1, self.label_num),
+            #                       valid_labels.float().view(-1, self.label_num))
             acc_valid = torch.eq(1 * (torch.sigmoid(valid_scores) > 0.5), valid_labels).float().mean().item()
             # acc_valid = torch.eq(torch.argmax(valid_scores, dim=-1), valid_labels).float().mean().item()
             f1_scores_valid = {}
             f1_valid = 0
             for i in range(len(valid_labels[0])):
-                f1_valid += metrics.f1_score(valid_labels[:, i].detach().cpu().numpy(),
-                                            1 * (valid_scores[:, i].detach().cpu().numpy() > 0.5), average='macro')
+                f1_valid += metrics.f1_score(valid_labels.detach().cpu().numpy(),
+                                            1 * (torch.sigmoid(valid_scores).detach().cpu().numpy() > 0.5), average='macro')
             f1_valid = f1_valid/len(valid_labels[0])
+            loss_train=-1
+            loss_valid=-1
             print('Epoch {}  loss: {:.4f} acc: {:.4f}'.format(epoch, loss_train, acc_train),
                   'Valid  loss: {:.4f}  acc: {:.4f}  f1: {:.4f}'.format(loss_valid, acc_valid, f1_valid))
             # test_scores = output[self.test_idx]

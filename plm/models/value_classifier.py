@@ -3,7 +3,7 @@ from tqdm import tqdm
 from transformers import AutoTokenizer, AutoModelForSequenceClassification, \
     get_scheduler, AdamW, AutoModelForMaskedLM
 from .base import Base
-from plm.utils import mask_tokens
+from utils import mask_tokens
 
 
 class ValueClassifier:
@@ -39,7 +39,7 @@ class ValueBert(Base):
     def __init__(self, model_path: str, config):
         super(ValueBert).__init__()
         self.model_path = model_path
-        self.tokenizer = AutoTokenizer.from_pretrained(model_path)
+        self.tokenizer = AutoTokenizer.from_pretrained(config.bert_model)
         self.model = AutoModelForSequenceClassification. \
             from_pretrained(model_path, num_labels=config.num_values)
         self.word_embedding = AutoModelForMaskedLM.from_pretrained(model_path)
@@ -84,6 +84,7 @@ class ValueBert(Base):
             labels, predicts = [], []
 
             for batch in train_dl:
+                batch, arg_ids = batch
                 batch = {k: v.to(self.config.device) for k, v in batch.items()}
                 outputs = self.model(input_ids=batch['input_ids'],
                                      attention_mask=batch['attention_mask'],
@@ -130,6 +131,7 @@ class ValueBert(Base):
                 progress_bar.update(1)
             self.evaluate_multilabel(dl=valid_dl, usage='VALIDATION')
             self.evaluate_multilabel(dl=train_dl, usage='TRAIN')
+            self.model.save_pretrained(self.config.save_path)
 
 
 class Similarity(torch.nn.Module):

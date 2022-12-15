@@ -124,7 +124,7 @@ def split_arguments(df_arguments):
     return train_arguments, valid_arguments, test_arguments
 
 
-def format_dataset(argument_filepath, label_filepath, values):
+def format_dataset(argument_filepath, label_filepath=None, values=None):
     df_arguments = load_arguments(argument_filepath)
 
     if not os.path.isfile(label_filepath):
@@ -139,3 +139,10 @@ def format_dataset(argument_filepath, label_filepath, values):
     df_full_level = combine_columns(df_arguments, df_labels)
 
     return df_full_level
+
+
+def test_dataset(argument_filepath):
+    df_arguments = pd.read_csv(argument_filepath,
+                               encoding='utf-8',
+                               sep='\t', header=0)
+    return df_arguments

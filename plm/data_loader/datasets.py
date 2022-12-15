@@ -36,13 +36,14 @@ class ValueDataset(Dataset):
         stance = [self.sep_token] + self.tokenize(sample['Stance'])
         premise = self.tokenize(sample['Premise'])
         sequence_ids = [self.cls_token] + premise + stance + conclusion + [self.sep_token]
+        arg_id = sample['Argument ID']
         labels = [b for a, b in sample.items() if a not in ['Argument ID',
                                                            "Conclusion",
                                                            "Stance",
                                                            "Premise",
-                                                            "Usage"]]
+                                                           "Usage"]]
         sequence_ids = torch.tensor(sequence_ids)
-        return sequence_ids, torch.sign(sequence_ids), labels
+        return sequence_ids, torch.sign(sequence_ids), labels, arg_id
 
 
 class ToxicDataset(Dataset):

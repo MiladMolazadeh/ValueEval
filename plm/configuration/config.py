@@ -22,7 +22,7 @@ class BaseConfig:
         self.parser.add_argument("--device", type=str, default="cuda:1")
         self.parser.add_argument("--batch_size", type=int, default=8)
         self.parser.add_argument("--shuffle", type=int, default=True)
-        self.parser.add_argument("--num_epochs", type=int, default=100)
+        self.parser.add_argument("--num_epochs", type=int, default=10)
         self.parser.add_argument("--num_values", type=int, default=20)
         self.parser.add_argument("--mlm_loss", type=bool, default=False)
         self.parser.add_argument("--lossContrastiveWeight", type=float, default=0.1)
@@ -52,13 +52,27 @@ class BaseConfig:
         self.parser.add_argument("--validation_labels_path", type=str,
                                  default=Path(__file__).parents[2].__str__() + "/data/labels-validation.tsv")
 
+        self.parser.add_argument("--zhihu_arguments_path", type=str,
+                                 default=Path(__file__).parents[2].__str__() + "/data/arguments-validation-zhihu.tsv")
+        self.parser.add_argument("--zhihu_labels_path", type=str,
+                                 default=Path(__file__).parents[2].__str__() + "/data/labels-validation-zhihu.tsv")
+
+
         self.parser.add_argument("--test_arguments_path", type=str,
                                  default=Path(__file__).parents[2].__str__() + "/data/arguments-test.tsv")
 
         self.parser.add_argument("--logging_path", type=str,
                                  default=Path(__file__).parents[2].__str__() + "/assets/logs/logging.conf")
+        # self.parser.add_argument("--bert_model", type=str,
+        #                          default='/home/LanguageModels/mbert_base_uncased')
+
         self.parser.add_argument("--bert_model", type=str,
-                                 default='/home/LanguageModels/mbert_base_uncased')
+                                 default='/home/LanguageModels/deberta-large')
+
+        self.parser.add_argument("--save_path", type=str,
+                                 default=Path(__file__).parents[2].__str__() +'/deberta-large-value')
+
+
         self.parser.add_argument("--saved_models_path", type=str,
                                  default=Path(__file__).parents[2].__str__() + "/assets/saved")
 

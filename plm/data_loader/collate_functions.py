@@ -24,10 +24,10 @@ def sequence_collate(batch) -> dict:
     Returns:
 
     """
-    input_ids, attention_ids, labels = zip(*batch)
+    input_ids, attention_ids, labels, arg_id = zip(*batch)
     padded_xs = pad_sequence(input_ids, batch_first=True, padding_value=0)
     padded_masks = pad_sequence(attention_ids, batch_first=True, padding_value=0)
 
     return {'input_ids': padded_xs,
             'attention_mask': padded_masks,
-            'labels': torch.tensor(labels)}
+            'labels': torch.tensor(labels)}, arg_id

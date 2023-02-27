@@ -105,9 +105,6 @@ class ValueBert(Base):
                 if self.config.lossCorRegWeight > 0:
                     last_hidden_state = outputs.hidden_states[-1]
                     covLoss = self.loss_covariance(last_hidden_state[:, 0])
-                    # print("covloss",
-                    #       covLoss)
-                    # print("loss", loss)
                     loss += 0.04 * covLoss
 
                 # dropout-based contrastive learning

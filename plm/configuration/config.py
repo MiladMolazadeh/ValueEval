@@ -56,8 +56,6 @@ class BaseConfig:
                                  default=Path(__file__).parents[2].__str__() + "/data/arguments-validation-zhihu.tsv")
         self.parser.add_argument("--zhihu_labels_path", type=str,
                                  default=Path(__file__).parents[2].__str__() + "/data/labels-validation-zhihu.tsv")
-
-
         self.parser.add_argument("--test_arguments_path", type=str,
                                  default=Path(__file__).parents[2].__str__() + "/data/arguments-test.tsv")
 

@@ -21,7 +21,7 @@ def get_results(data, partition_name):
                     collate_fn=collate_fn(),
                     batch_size=CONFIG.batch_size)
 
-    result_csv = [COLUMNS]
+    result_csv = [['Argument ID'] + COLUMNS]
     predicts_list, labels = [], []
     with torch.no_grad():
         for batch in dl:
@@ -51,7 +51,9 @@ def get_results(data, partition_name):
 if __name__ == '__main__':
     CONFIG = BaseConfig().get_config()
     VALUES = load_values_from_json(CONFIG.values_path)
-    COLUMNS = pd.read_csv(CONFIG.train_labels_path, encoding='utf-8', sep='\t', header=0).columns.tolist()
+    COLUMNS1 = pd.read_csv(CONFIG.train_labels_path, encoding='utf-8', sep='\t', header=0).columns.tolist()
+    COLUMNS = ['Achievement', 'Benevolence: caring', 'Benevolence: dependability', 'Conformity: interpersonal', 'Conformity: rules', 'Face', 'Hedonism', 'Humility', 'Power: dominance', 'Power: resources', 'Security: personal', 'Security: societal', 'Self-direction: action', 'Self-direction: thought', 'Stimulation', 'Tradition', 'Universalism: concern', 'Universalism: nature', 'Universalism: objectivity', 'Universalism: tolerance']
+
     TRAIN_DATA = format_dataset(CONFIG.train_arguments_path,
                                 CONFIG.train_labels_path,
                                 VALUES)

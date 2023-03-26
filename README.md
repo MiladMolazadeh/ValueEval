@@ -1,5 +1,5 @@
 
-## T.M. Scanlon at SemEval-2023 Task 4: Leveraging Pretrained Language Models for Human Value Argument Mining with Contrastive Learning
+## T.M. Scanlon at [SemEval-2023 Task 4](https://touche.webis.de/semeval23/touche23-web/index.html): Leveraging Pretrained Language Models for Human Value Argument Mining with Contrastive Learning
 *Milad Molazadeh Oskuee, Mostafa Rahgouy, Hamed Babaei Giglou, and Cheryl D Seals*
 
 ![Diagram](images/diagram.jpg)

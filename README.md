@@ -8,4 +8,16 @@
 
 ## Cite us as:
 
-> Milad Molazadeh Oskuee, Mostafa Rahgouy, Hamed Babaei Giglou, and Cheryl D Seals. 2023. T.M. Scanlon at SemEval-2023 Task 4: Leveraging Pretrained Language Models for Human Value Argument Mining with Contrastive Learning. In Proceedings of The 17th International Workshop on Semantic Evaluation. Association for Computational Linguistics
+```bib
+
+@InProceedings{kiesel:2023,
+  author    = {Molazadeh Oskuee, Milad  and  Rahgouy, Mostafa  and  Babaei Giglou, Hamed  and  D Seals, Cheryl},
+  title     = {T.M. Scanlon at SemEval-2023 Task 4: Leveraging Pretrained Language Models for Human Value Argument Mining with Contrastive Learning},
+  booktitle      = {Proceedings of the 17th International Workshop on Semantic Evaluation},
+  month          = {July},
+  year           = {2023},
+  address        = {Toronto, Canada},
+  publisher      = {Association for Computational Linguistics},
+}
+
+```

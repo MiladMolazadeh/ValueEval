@@ -10,7 +10,7 @@
 
 ```bib
 
-@InProceedings{kiesel:2023,
+@InProceedings{Oskuee:2023,
   author    = {Molazadeh Oskuee, Milad  and  Rahgouy, Mostafa  and  Babaei Giglou, Hamed  and  D Seals, Cheryl},
   title     = {T.M. Scanlon at SemEval-2023 Task 4: Leveraging Pretrained Language Models for Human Value Argument Mining with Contrastive Learning},
   booktitle      = {Proceedings of the 17th International Workshop on Semantic Evaluation},

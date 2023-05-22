@@ -1,0 +1,8 @@
+torch==1.10.2
+scikit-learn==1.0.2
+numpy==1.23.4
+tqdm==4.62.3
+transformers==4.10.1
+pandas==1.4.3
+scipy==1.8.1
+nltk==3.3

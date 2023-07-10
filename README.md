@@ -9,15 +9,18 @@
 ## Cite us as:
 
 ```bib
-
-@InProceedings{Oskuee:2023,
-  author    = {Molazadeh Oskuee, Milad  and  Rahgouy, Mostafa  and  Babaei Giglou, Hamed  and  D Seals, Cheryl},
-  title     = {T.M. Scanlon at SemEval-2023 Task 4: Leveraging Pretrained Language Models for Human Value Argument Mining with Contrastive Learning},
-  booktitle      = {Proceedings of the 17th International Workshop on Semantic Evaluation},
-  month          = {July},
-  year           = {2023},
-  address        = {Toronto, Canada},
-  publisher      = {Association for Computational Linguistics},
+@inproceedings{molazadeh-oskuee-etal-2023-scanlon,
+    title = "{T}.{M}. Scanlon at {S}em{E}val-2023 Task 4: Leveraging Pretrained Language Models for Human Value Argument Mining with Contrastive Learning",
+    author = "Molazadeh Oskuee, Milad  and
+      Rahgouy, Mostafa  and
+      Babaei Giglou, Hamed  and
+      D Seals, Cheryl",
+    booktitle = "Proceedings of the The 17th International Workshop on Semantic Evaluation (SemEval-2023)",
+    month = jul,
+    year = "2023",
+    address = "Toronto, Canada",
+    publisher = "Association for Computational Linguistics",
+    url = "https://aclanthology.org/2023.semeval-1.82",
+    pages = "603--608"
 }
-
 ```
